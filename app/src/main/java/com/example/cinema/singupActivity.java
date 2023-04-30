@@ -47,7 +47,7 @@ public class singupActivity extends AppCompatActivity {
         log.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(singupActivity.this, MainActivity.class));
+                startActivity(new Intent(singupActivity.this, loginActivity.class));
             }
         });
 
