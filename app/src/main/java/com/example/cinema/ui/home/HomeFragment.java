@@ -4,34 +4,81 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cinema.databinding.FragmentHomeBinding;
+import com.example.cinema.R;
 
 public class HomeFragment extends Fragment {
 
-    private FragmentHomeBinding binding;
+    private RecyclerView mRecyclerView;
+    private MyAdapter mAdapter;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        return root;
-    }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+
+        mRecyclerView = rootView.findViewById(R.id.recyclerView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerView.setLayoutManager(layoutManager);
+
+        String[] data = {"", "", "", "", ""};
+        int[] images = {R.drawable.image1, R.drawable.image2, R.drawable.image1,
+                R.drawable.image1, R.drawable.image1};
+        mAdapter = new MyAdapter(data, images);
+        mRecyclerView.setAdapter(mAdapter);
+
+        return rootView;
+    }
+
+    private static class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+
+        private String[] mData;
+        private int[] mImages;
+
+        public MyAdapter(String[] data,int[] images) {
+
+            mData = data;
+            mImages = images;
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_list, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            holder.mTextView.setText(mData[position]);
+            holder.mImageView.setImageResource(mImages[position]);
+        }
+
+        @Override
+        public int getItemCount() {
+            return mData.length;
+        }
+
+        public static class ViewHolder extends RecyclerView.ViewHolder {
+            public TextView mTextView;
+            public ImageView mImageView;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                mTextView = itemView.findViewById(R.id.textView);
+                mImageView = itemView.findViewById(R.id.imageView);
+                mImageView.setAdjustViewBounds(true);
+            }
+        }
     }
 }
