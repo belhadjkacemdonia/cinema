@@ -7,9 +7,15 @@
         android:icon="@drawable/baseline_login_24"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/Profil"
+        android:orderInCategory="100"
+        android:title="My Profil"
+        android:visible="false"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/Liste"
         android:orderInCategory="100"
-        android:title="Liste"
+        android:title="My List"
         android:visible="false"
         app:showAsAction="never" />
     <item

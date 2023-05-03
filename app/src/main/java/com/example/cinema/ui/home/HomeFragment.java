@@ -31,8 +31,8 @@ public class HomeFragment extends Fragment {
         mRecyclerView.setLayoutManager(layoutManager);
 
         String[] data = {"", "", "", "", ""};
-        int[] images = {R.drawable.image1, R.drawable.image2, R.drawable.image1,
-                R.drawable.image1, R.drawable.image1};
+        int[] images = {R.drawable.image1, R.drawable.image2, R.drawable.image3,
+                R.drawable.image4, R.drawable.image5};
         mAdapter = new MyAdapter(data, images);
         mRecyclerView.setAdapter(mAdapter);
 

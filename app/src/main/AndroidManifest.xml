@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Cinema"
         tools:targetApi="31">
         <activity
+            android:name=".MyProfil"
+            android:exported="false" />
+        <activity
             android:name=".ListeActivity"
             android:exported="false" />
         <activity

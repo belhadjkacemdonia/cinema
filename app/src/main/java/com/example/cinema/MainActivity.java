@@ -75,12 +75,14 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         MenuItem id = menu.findItem(R.id.idLogin);
+        MenuItem id3 = menu.findItem(R.id.Profil);
         MenuItem id1 = menu.findItem(R.id.Liste);
         MenuItem id2 = menu.findItem(R.id.logout);
         if (fAuth.getCurrentUser() !=null) {
             id.setVisible(false);
             id1.setVisible(true);
             id2.setVisible(true);
+            id3.setVisible(true);
             }
         return true;
     }
@@ -96,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         int id1 = item.getItemId();
         int id2 = item.getItemId();
+        int id3 = item.getItemId();
         if (id == R.id.idLogin) {
             Intent intent= new Intent(MainActivity.this, loginActivity.class);
             startActivity(intent);
@@ -111,6 +114,11 @@ public class MainActivity extends AppCompatActivity {
         if (id2 == R.id.Liste) {
             startActivity(new Intent(MainActivity.this, ListeActivity.class));
             Toast.makeText(getApplicationContext(), "Liste !!!.", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        if (id3 == R.id.Profil) {
+            startActivity(new Intent(MainActivity.this, MyProfil.class));
+            Toast.makeText(getApplicationContext(), "My Profil !!!.", Toast.LENGTH_SHORT).show();
             return true;
         }
 
