@@ -16,8 +16,8 @@ import com.example.cinema.R;
 
 public class HomeFragment extends Fragment {
 
-    private RecyclerView mRecyclerView;
-    private MyAdapter mAdapter;
+    private RecyclerView mRecyclerView,recyclerView2;
+    private MyAdapter mAdapter,mAdapter1;
 
 
     @Override
@@ -30,13 +30,22 @@ public class HomeFragment extends Fragment {
                 LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
 
+        recyclerView2 = rootView.findViewById(R.id.recyclerView2);
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.HORIZONTAL, false);
+        recyclerView2.setLayoutManager(layoutManager1);
+
         String[] data = {"", "", "", "", ""};
         int[] images = {R.drawable.image1, R.drawable.image2, R.drawable.image3,
                 R.drawable.image4, R.drawable.image5};
         mAdapter = new MyAdapter(data, images);
+        mAdapter1 = new MyAdapter(data, images);
+
         mRecyclerView.setAdapter(mAdapter);
+        recyclerView2.setAdapter(mAdapter1);
 
         return rootView;
+
     }
 
     private static class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
