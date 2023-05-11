@@ -1,15 +1,14 @@
 package com.example.cinema;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -22,10 +21,10 @@ import java.util.Objects;
 
 public class MyProfil extends AppCompatActivity {
 
-    private String name, surname,  password;
-    private EditText nomM, prenomM,  passwordM;
+    private String name, surname;
+    private EditText nomM, prenomM;
     private Button edit;
-    private View nom, prenom;
+
     ProgressBar progressBar;
     FirebaseAuth fAuth;
     FirebaseDatabase rootNude;
@@ -37,7 +36,6 @@ public class MyProfil extends AppCompatActivity {
         setContentView(R.layout.activity_my_profil);
         nomM = findViewById(R.id.modifnom);
         prenomM = findViewById(R.id.modifprenom);
-        passwordM = findViewById(R.id.modifpassword);
         fAuth = FirebaseAuth.getInstance();
         edit = findViewById(R.id.modif);
         progressBar = findViewById(R.id.idprogressBar);
@@ -71,14 +69,13 @@ public class MyProfil extends AppCompatActivity {
                 String currentUserId = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
                 name = nomM.getText().toString().trim();
                 surname = prenomM.getText().toString().trim();
-                password = passwordM.getText().toString().trim();
 
 
-                ModifData modifData= new ModifData(name,surname,password);
 
-                reference.child(currentUserId).child("name").setValue(modifData.getNom());
-                reference.child(currentUserId).child("surname").setValue(modifData.getPrenom());
-                reference.child(currentUserId).child("password").setValue(modifData.getPassword());
+                Modif modif = new Modif(name,surname);
+//modifier les cordonnée de user
+                reference.child(currentUserId).child("name").setValue(modif.getNom());
+                reference.child(currentUserId).child("surname").setValue(modif.getPrenom());
                 Toast.makeText(MyProfil.this, "modified with success ", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(MyProfil.this, MainActivity.class));
 

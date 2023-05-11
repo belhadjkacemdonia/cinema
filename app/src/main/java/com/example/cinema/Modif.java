@@ -1,11 +1,11 @@
 package com.example.cinema;
 
-public class ModifData {
-    String nom, prenom, password;
-    public ModifData(String nom, String prenom, String password) {
+public class Modif {
+    String nom, prenom;
+
+    public Modif(String nom, String prenom) {
         this.nom = nom;
         this.prenom = prenom;
-        this.password = password;
 
     }
 
@@ -24,12 +24,8 @@ public class ModifData {
     public void setPrenom(String prenom) {
         this.prenom = prenom;
     }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }
+
+
+
+

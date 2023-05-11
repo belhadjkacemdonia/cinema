@@ -1,8 +1,5 @@
 package com.example.cinema;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -61,7 +61,7 @@ public class singupActivity extends AppCompatActivity {
                 mail = email.getText().toString().trim();
                 password = pasword.getText().toString().trim();
 
-
+                //classe userenreg pour le getter et setter
                 UserEnreg userEnreg = new UserEnreg(name, subname, mail);
 
 
@@ -81,8 +81,11 @@ public class singupActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (TextUtils.isEmpty(password)){
+                if (TextUtils.isEmpty(password)) {
                     pasword.setError("Veuillez entrer votre mot de passe");
+                    return;
+                } else if (password.length() < 6) {
+                    pasword.setError("Le mot de passe doit contenir au moins 6 caractères");
                     return;
                 }
 

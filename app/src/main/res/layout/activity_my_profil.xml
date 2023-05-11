@@ -5,34 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MyProfil">
-    <TextView
-        android:id="@+id/nom_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        tools:ignore="MissingConstraints" />
-    <TextView
-        android:id="@+id/prenom_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        tools:ignore="MissingConstraints" />
 
-
-
-    <EditText
-        android:id="@+id/modifpassword"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="47dp"
-        android:autofillHints="@string/prompt_email"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:selectAllOnFocus="true"
-        app:layout_constraintBottom_toTopOf="@+id/modif"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/modifprenom" />
 
     <EditText
         android:id="@+id/modifnom"
@@ -42,7 +15,6 @@
         android:layout_marginTop="95dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="28dp"
-        android:autofillHints="@string/prompt_email"
         android:hint="Last name"
         android:inputType="text"
         android:selectAllOnFocus="true"
@@ -57,12 +29,11 @@
         android:layout_height="0dp"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
-        android:layout_marginBottom="25dp"
-        android:autofillHints="@string/prompt_email"
+        android:layout_marginBottom="98dp"
         android:hint="First name"
         android:inputType="text"
         android:selectAllOnFocus="true"
-        app:layout_constraintBottom_toTopOf="@+id/modifpassword"
+        app:layout_constraintBottom_toTopOf="@+id/idprogressBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/modifnom" />
@@ -72,12 +43,12 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="23dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginBottom="6dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/modif"
-        app:layout_constraintEnd_toEndOf="@+id/modif"
-        app:layout_constraintTop_toBottomOf="@+id/modifpassword"
+        app:layout_constraintStart_toStartOf="@+id/modif"
+        app:layout_constraintTop_toBottomOf="@+id/modifprenom"
         tools:ignore="MissingConstraints" />
 
     <Button
@@ -89,7 +60,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/modifpassword" />
+        app:layout_constraintTop_toBottomOf="@+id/idprogressBar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

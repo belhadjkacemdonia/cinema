@@ -2,7 +2,6 @@ package com.example.cinema.ui.home;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.cinema.R;
 import com.example.cinema.film;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.ListResult;
-import com.google.firebase.storage.StorageReference;
+import com.example.cinema.loginActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +32,10 @@ public class HomeFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private MyAdapter mAdapter;
 
-    private StorageReference mStorageRef;
+    private FirebaseFirestore mFirestore;
     private List<String> mImageUrls;
+    private List<String> mTitles;
+    private List<String> mDescriptions;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,23 +47,46 @@ public class HomeFragment extends Fragment {
                 LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mStorageRef = FirebaseStorage.getInstance().getReference().child("Images");
+        mFirestore = FirebaseFirestore.getInstance();
 
         mImageUrls = new ArrayList<>();
-        mAdapter = new MyAdapter(mImageUrls);
+        mTitles = new ArrayList<>();
+        mDescriptions = new ArrayList<>();
+        mAdapter = new MyAdapter(mImageUrls, mTitles, mDescriptions);
         mRecyclerView.setAdapter(mAdapter);
 
-        mStorageRef.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+        mFirestore.collection("Images").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onSuccess(ListResult listResult) {
-                for (StorageReference item : listResult.getItems()) {
-                    item.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            mImageUrls.add(uri.toString());
-                            mAdapter.notifyDataSetChanged();
-                        }
-                    });
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot document : task.getResult()) {
+                        String documentId = document.getId();
+
+
+                        mFirestore.collection("Images").document(documentId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document.exists()) {
+                                        String imageUrl = document.getString("imageUrls");
+                                        String title = document.getString("titles");
+                                        String description = document.getString("descriptions");
+
+                                        mImageUrls.add(imageUrl);
+                                        mTitles.add(title);
+                                        mDescriptions.add(description);
+
+                                        mAdapter.notifyDataSetChanged();
+                                    }
+                                } else {
+                                    // Handle error
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    // Handle error
                 }
             }
         });
@@ -71,9 +98,13 @@ public class HomeFragment extends Fragment {
     private static class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         private List<String> mImageUrls;
+        private List<String> mTitles;
+        private List<String> mDescriptions;
 
-        public MyAdapter(List<String> imageUrls) {
+        public MyAdapter(List<String> imageUrls, List<String> titles, List<String> descriptions) {
             mImageUrls = imageUrls;
+            mTitles = titles;
+            mDescriptions = descriptions;
         }
 
         @NonNull
@@ -87,8 +118,10 @@ public class HomeFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             String imageUrl = mImageUrls.get(position);
+            String title = mTitles.get(position);
+            String description = mDescriptions.get(position);
 
-            // Charger l'image à partir de l'URL de téléchargement avec Glide
+            // Load the image from the download URL using Glide
             Glide.with(holder.itemView.getContext())
                     .load(imageUrl)
                     .into(holder.mImageView);
@@ -96,10 +129,22 @@ public class HomeFragment extends Fragment {
             holder.mImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Context context = v.getContext();
-                    Intent intent = new Intent(context, film.class);
-                    context.startActivity(intent);
+                    if (FirebaseAuth.getInstance().getCurrentUser() !=null) {
+                        Context context = v.getContext();
+                        Intent intent = new Intent(context, film.class);
+                        intent.putExtra("title", title);
+                        intent.putExtra("description", description);
+                        intent.putExtra("imageUrl", imageUrl);
+                        context.startActivity(intent);
+                    }else{ // User is not logged in, navigate to LoginActivity
+                        Context context = v.getContext();
+                        Intent intent = new Intent(context, loginActivity.class);
+                        context.startActivity(intent);
+
+                    }
+
                 }
+
             });
         }
 
@@ -119,3 +164,4 @@ public class HomeFragment extends Fragment {
         }
     }
 }
+
