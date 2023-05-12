@@ -14,7 +14,7 @@
             android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Moviesssssssssssssssssss"
+            android:text="Forja Tv"
             android:textColor="@color/black"
             android:textStyle="bold|italic"
             android:textSize="30dp"

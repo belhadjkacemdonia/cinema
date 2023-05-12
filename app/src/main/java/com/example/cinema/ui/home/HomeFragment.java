@@ -55,6 +55,7 @@ public class HomeFragment extends Fragment {
         mAdapter = new MyAdapter(mImageUrls, mTitles, mDescriptions);
         mRecyclerView.setAdapter(mAdapter);
 
+        // Récupérer les images à partir de la collection "Images" dans Firestore
         mFirestore.collection("Images").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -62,7 +63,7 @@ public class HomeFragment extends Fragment {
                     for (DocumentSnapshot document : task.getResult()) {
                         String documentId = document.getId();
 
-
+                        // Récupérer les détails de chaque document dans la collection
                         mFirestore.collection("Images").document(documentId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -76,7 +77,7 @@ public class HomeFragment extends Fragment {
                                         mImageUrls.add(imageUrl);
                                         mTitles.add(title);
                                         mDescriptions.add(description);
-
+                                    //mettre à jour les changements
                                         mAdapter.notifyDataSetChanged();
                                     }
                                 } else {
@@ -121,7 +122,7 @@ public class HomeFragment extends Fragment {
             String title = mTitles.get(position);
             String description = mDescriptions.get(position);
 
-            // Load the image from the download URL using Glide
+            // Chargez l'image à partir de l'URL de téléchargement à l'aide de Glide
             Glide.with(holder.itemView.getContext())
                     .load(imageUrl)
                     .into(holder.mImageView);
@@ -130,13 +131,14 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     if (FirebaseAuth.getInstance().getCurrentUser() !=null) {
+                        // Si l'utilisateur est connecté
                         Context context = v.getContext();
                         Intent intent = new Intent(context, film.class);
                         intent.putExtra("title", title);
                         intent.putExtra("description", description);
                         intent.putExtra("imageUrl", imageUrl);
                         context.startActivity(intent);
-                    }else{ // User is not logged in, navigate to LoginActivity
+                    }else{ // Si l'utilisateur n'est pas connecté
                         Context context = v.getContext();
                         Intent intent = new Intent(context, loginActivity.class);
                         context.startActivity(intent);
