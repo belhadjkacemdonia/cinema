@@ -49,17 +49,15 @@ public class film extends AppCompatActivity {
                     .into(imageView);
         }
 
-        String currentUserId = fAuth.getInstance().getCurrentUser().getUid();
+        String currentUserId =fAuth.getInstance().getCurrentUser().getUid();
         String title = intent.getStringExtra("title");
         String description = intent.getStringExtra("description");
-        resFilm resfilm = new resFilm(title, description);
-
+        resFilm resfilm= new resFilm(title,description);
         Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Enregistrer la réservation du film dans la base de données Firebase Realtime Database
                 FirebaseDatabase.getInstance().getReference("reservation").child(currentUserId).push().setValue(resfilm);
-                startActivity(new Intent(film.this, MainActivity.class));
+                startActivity(new Intent(film.this,MainActivity.class));
             }
         });
 
